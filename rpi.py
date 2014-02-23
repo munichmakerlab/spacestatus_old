@@ -78,6 +78,9 @@ mqttc.on_log = on_log
 print "[Main] Adding interrupt"
 GPIO.add_event_detect(23, GPIO.BOTH, callback=status_callback)
 
+# Get initial status
+set_status(23)
+
 # Loop forever
 print "[Main] Entering loop"
 mqttc.loop_forever()
