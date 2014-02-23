@@ -2,3 +2,4 @@ config.py
 logs
 current_status
 *.pyc
+env
