@@ -9,6 +9,8 @@ room_open = False
 
 def on_connect(mosq, obj, rc):
 	print "[MQTT] Connect with RC " + str(rc)
+	# Get initial status
+	set_status(23)
 
 def on_disconnect(client, userdata, rc):
 	print "[MQTT] Disconnected " + str(rc)
@@ -77,9 +79,6 @@ mqttc.on_log = on_log
 # add interrupt to GPIO pin
 print "[Main] Adding interrupt"
 GPIO.add_event_detect(23, GPIO.BOTH, callback=status_callback)
-
-# Get initial status
-set_status(23)
 
 # Loop forever
 print "[Main] Entering loop"
