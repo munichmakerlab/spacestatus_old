@@ -2,72 +2,75 @@
 import RPi.GPIO as GPIO
 import paho.mqtt.client as paho
 from threading import Timer
+import logging
 
 import config
 
 room_open = False
 
 def on_connect(mosq, obj, rc):
-	print "[MQTT] Connect with RC " + str(rc)
+	logging.info("Connect with RC " + str(rc))
 	# Get initial status
 	set_status(23)
 
 def on_disconnect(client, userdata, rc):
-	print "[MQTT] Disconnected " + str(rc)
-	try_reconnect(client)
+	logging.warning("Disconnected (RC " + str(rc) + ")")
+	if rc <> 0:
+		try_reconnect(client)
 
 def on_log(client, userdata, level, buf):
-	print "[MQTT] LOG: " + buf
+	logging.debug(buf)
 
 # MQTT reconnect
 def try_reconnect(client, time = 60):
 	try:
-		print "[MQTT] Trying reconnect"
+		logging.info("Trying reconnect")
 		client.reconnect()
 	except:
-		print "[MQTT] Reconnect failed. Trying again in " + str(time) + " seconds"
+		logging.warning("Reconnect failed. Trying again in " + str(time) + " seconds")
 		Timer(time, try_reconnect, [client]).start()
-
 
 # post the status to MQTT and the local console
 def print_status():
-	print "[MQTT] Publishing status"
+	logging.info("Publishing status to MQTT")
 	if room_open:
-		print "[Room] Current status: open"
+		logging.info("Current space status: open")
 		mqttc.publish(config.topic, "1", 1, True)
 	else:
-		print "[Room] Current status: closed"
+		logging.info("Current space status: closed")
 		mqttc.publish(config.topic, "0", 1, True)
 
 # after timer has fired, get the status
 def set_status(channel):
 	global room_open
-	print "[GPIO] Getting status"
+	logging.info("Getting status from GPIO")
 	if GPIO.input(channel) == GPIO.HIGH:
 		room_open = True
 	else:
 		room_open = False
-	print "[GPIO] Current Status: " + str(room_open)
+	logging.info("Current Status: " + str(room_open))
 	print_status()
 
 # Reset timer when interrupt is received
 def status_callback(channel):
 	global bounce_timer
-	print "[GPIO] interrupt detected"
+	logging.info("GPIO interrupt detected")
 	bounce_timer.cancel()
 	bounce_timer = Timer(2.0, set_status, [channel])
 	bounce_timer.start()
+
+logging.basicConfig(format='[%(levelname)s] %(asctime)s %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.INFO)
 
 # create timer initialy so it can be canceled
 bounce_timer = Timer(5.0, set_status)
 
 # initialize GPIO
-print "[Main] Initializing GPIO"
+logging.info("Initializing GPIO")
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 # initialize MQTT
-print "[Main] Initializing MQTT Client"
+logging.info("Initializing MQTT")
 mqttc = paho.Client("mumalab_status_box")
 mqttc.username_pw_set(config.broker["user"], config.broker["password"])
 mqttc.will_set(config.topic, "?", 1, True)
@@ -77,14 +80,14 @@ mqttc.on_disconnect = on_disconnect
 mqttc.on_log = on_log
 
 # add interrupt to GPIO pin
-print "[Main] Adding interrupt"
+logging.info("Adding interrupt")
 GPIO.add_event_detect(23, GPIO.BOTH, callback=status_callback)
 
 # Loop forever
-print "[Main] Entering loop"
+logging.info("Entering loop")
 mqttc.loop_forever()
 
 # Clean up afterwards
-print "[Main] Cleanup"
+logging.info("Cleanup")
 GPIO.cleanup()
 mqttc.disconnect()

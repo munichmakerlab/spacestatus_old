@@ -1,39 +1,41 @@
 import paho.mqtt.client as paho
 from threading import Timer
+import logging
 
 import config
 
 def on_connect(mosq, obj, rc):
-	print "[MQTT] Connect with RC " + str(rc)
+	logging.info("Connect with RC " + str(rc))
 	mosq.subscribe(config.topic, 0)
-	# print("rc: "+str(rc))
 
 def on_message(mosq, obj, msg):
-	print "[MQTT] " + msg.topic + " [" + str(msg.qos) + "]: " + str(msg.payload)
+	logging.info(msg.topic + " [" + str(msg.qos) + "]: " + str(msg.payload))
 	f = open("current_status","w")
 	f.write(msg.payload)
 	f.close()
 
 def on_subscribe(mosq, obj, mid, granted_qos):
-	print "[MQTT] Subscribed: "+str(mid)+" "+str(granted_qos)
+	logging.info("Subscribed: "+str(mid)+" "+str(granted_qos))
 
 def on_disconnect(client, userdata, rc):
-	print "[MQTT] Disconnected " + str(rc)
-	try_reconnect(client)
+	logging.warning("Disconnected (RC " + str(rc) + ")")
+	if rc <> 0:
+		try_reconnect(client)
 
 def on_log(client, userdata, level, buf):
-	print "[MQTT] LOG: " + buf
+	logging.debug(buf)
 	
 def try_reconnect(client, time = 60):
 	try:
-		print "[MQTT] Trying reconnect"
+		logging.info("Trying reconnect")
 		client.reconnect()
 	except:
-		print "[MQTT] Reconnect failed. Trying again in " + str(time) + " seconds"
+		logging.warning("Reconnect failed. Trying again in " + str(time) + " seconds")
 		Timer(time, try_reconnect, [client]).start()
 
+logging.basicConfig(format='[%(levelname)s] %(asctime)s %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.INFO)
 
-print "[Main] Initializing MQTT"
+logging.info("Initializing MQTT")
 mqttc = paho.Client()
 mqttc.username_pw_set(config.broker["user"], config.broker["password"])
 mqttc.on_message = on_message
@@ -44,11 +46,14 @@ mqttc.on_log = on_log
 try:
 	mqttc.connect(config.broker["hostname"], config.broker["port"])
 except:
-	print "[MQTT] Connection failed. Trying again in 30 seconds"
+	logging.warning("Connection failed. Trying again in 30 seconds")
 	Timer(30, try_reconnect, [mqttc]).start()
 
-print "[Main] Entering loop"
-mqttc.loop_forever()
+logging.info("Entering loop")
+try:
+	mqttc.loop_forever()
+except KeyboardInterrupt:
+	pass
 
-print "[Main] Exiting"
+logging.info("Exiting")
 mqttc.disconnect()
