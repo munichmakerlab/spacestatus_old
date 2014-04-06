@@ -13,9 +13,11 @@ def on_message(mosq, obj, msg):
 	if msg.payload == "1":
 		mqttc.publish("mumalab/room/lights/whiteboard/state", "1", 1, False)
 		mqttc.publish("mumalab/room/lights/hanging_lights/state", "1", 1, False)
+		mqttc.publish("mumalab/room/lights/chandelier/state", "1", 1, False)
 	elif msg.payload == "0":
 		mqttc.publish("mumalab/room/lights/whiteboard/state", "0", 1, False)
 		mqttc.publish("mumalab/room/lights/hanging_lights/state", "0", 1, False)
+		mqttc.publish("mumalab/room/lights/chandelier/state", "0", 1, False)
 	
 
 def on_subscribe(mosq, obj, mid, granted_qos):
