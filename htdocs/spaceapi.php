@@ -11,12 +11,12 @@ header('Content-type: application/json; charset=utf-8');
 $data = array(
 	"api" => "0.13",
 	"space" => "Munich Maker Lab",
-	"logo" => "https://munichmakerlab.de/w/skins/common/images/mumalab.png",
+	"logo" => "https://wiki.munichmakerlab.de/w/images/mumalab.png",
 	"url" => "https://munichmakerlab.de/",
 	"location" => array(
-		"address" => "Grafinger Straße 6, 81671 München, Germany",
-		"lon" => 11.607807,
-		"lat" => 48.12344
+		"address" => "Baierbrunner Str 28, 81379 München, Germany",
+		"lon" => 11.530482,
+		"lat" => 48.096589
 	),
 	"spacefed" => array(
 		"spacenet" => false,
@@ -33,10 +33,6 @@ $data = array(
 	),
 	"issue_report_channels" => array("issue_mail"),
 	"feeds" => array(
-		"blog" => array(
-			"type" => "application/rss+xml",
-			"url" => "https://munichmakerlab.de/feed/"
-		),
 		"log" => array(
 			"type" => "application/rss+xml",
 			"url" => "http://log.munichmakerlab.de/rss"
