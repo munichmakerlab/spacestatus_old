@@ -1,8 +1,13 @@
+#!/var/www/vhosts/munichmakerlab.de/status/env/bin/python
 import paho.mqtt.client as paho
 from threading import Timer
 import logging
+import os
 
 import config
+
+PATH=os.path.dirname(os.path.realpath(__file__))
+STATUS_FILE= "%s/%s" % (PATH, "current_status")
 
 def on_connect(mosq, obj, rc):
 	logging.info("Connect with RC " + str(rc))
@@ -10,7 +15,7 @@ def on_connect(mosq, obj, rc):
 
 def on_message(mosq, obj, msg):
 	logging.info(msg.topic + " [" + str(msg.qos) + "]: " + str(msg.payload))
-	f = open("current_status","w")
+	f = open(STATUS_FILE,"w")
 	f.write(msg.payload)
 	f.close()
 
@@ -37,7 +42,7 @@ logging.basicConfig(format='[%(levelname)s] %(asctime)s %(message)s', datefmt='%
 
 logging.info("Initializing MQTT")
 mqttc = paho.Client()
-mqttc.username_pw_set(config.broker["user"], config.broker["password"])
+#mqttc.username_pw_set(config.broker["user"], config.broker["password"])
 mqttc.on_message = on_message
 mqttc.on_connect = on_connect
 mqttc.on_disconnect = on_disconnect
