@@ -14,9 +14,9 @@ $data = array(
 	"logo" => "https://wiki.munichmakerlab.de/w/images/mumalab.png",
 	"url" => "https://munichmakerlab.de/",
 	"location" => array(
-		"address" => "Baierbrunner Str 28, 81379 München, Germany",
-		"lon" => 11.530482,
-		"lat" => 48.096589
+		"address" => "Dachauer Str. 112f, 80636 München, Germany",
+		"lon" => 11.5482333,
+		"lat" => 48.158752
 	),
 	"spacefed" => array(
 		"spacenet" => false,
@@ -39,7 +39,7 @@ $data = array(
 		),
 		"calendar" => array(
 			"type" => "text/calendar",
-			"url" => "https://munichmakerlab.de/events.ics"
+			"url" => "https://calendar.google.com/calendar/ical/lbd0aa2rlahecp7juvp35hd0k0%40group.calendar.google.com/public/basic.ics"
 		)
 	),
 	"cache" => array( "schedule" => "m.02" ),

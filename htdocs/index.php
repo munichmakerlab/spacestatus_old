@@ -17,6 +17,8 @@ $status = substr(file_get_contents("../current_status"),0,1);
 			<img src="unknown.png">
 			<p>The status of the lab is currently unknown.</p>
 		<?php } ?>
+		<h2>Temperature</h2>
+		<iframe src="http://graphs.maqn.de/dashboard-solo/db/mumalab-climate?panelId=1&theme=light" width="450" height="200" frameborder="0"></iframe>
 	</body>
 </html>
 
