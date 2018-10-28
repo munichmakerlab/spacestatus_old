@@ -37,6 +37,9 @@ $status = substr(file_get_contents("../current_status"),0,1);
 		</article>
 		</section>
 		</main>
+		<footer>
+<a href="https://munichmakerlab.de/imprint.html">Impressum/Imprint</a> - <a href="https://munichmakerlab.de/privacy.html">Datenschutzerklärung/Privacy Policy</a>
+		</footer>
 	</body>
 </html>
 
