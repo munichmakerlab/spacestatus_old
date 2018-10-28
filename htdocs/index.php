@@ -32,8 +32,8 @@ $status = substr(file_get_contents("../current_status"),0,1);
 		<section>
 		<article>
 		<h2>Temperature</h2>
-		<iframe src="http://graphs.maqn.de/dashboard-solo/db/mumalab-climate?panelId=1&theme=light" width="450" height="200" frameborder="0"></iframe>
-		<p><a href="http://graphs.maqn.de/dashboard/db/mumalab-climate">Lab Climate Dashboard</a></p>
+		<iframe src="https://graphs.maqn.de/dashboard-solo/db/mumalab-climate?panelId=1&theme=light" width="450" height="200" frameborder="0"></iframe>
+		<p><a href="https://graphs.maqn.de/dashboard/db/mumalab-climate">Lab Climate Dashboard</a></p>
 		</article>
 		</section>
 		</main>
