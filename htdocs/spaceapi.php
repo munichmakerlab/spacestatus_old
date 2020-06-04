@@ -11,10 +11,10 @@ header('Content-type: application/json; charset=utf-8');
 $data = array(
 	"api" => "0.13",
 	"space" => "Munich Maker Lab",
-	"logo" => "https://wiki.munichmakerlab.de/w/images/mumalab.png",
+	"logo" => "https://wiki.munichmakerlab.de/images/mumalab.png",
 	"url" => "https://munichmakerlab.de/",
 	"location" => array(
-		"address" => "Dachauer Str. 112f, 80636 München, Germany",
+		"address" => "Dachauer Str. 112h, 80636 München, Germany",
 		"lon" => 11.5482333,
 		"lat" => 48.158752
 	),
