@@ -1,5 +1,6 @@
 <?php
 $status = substr(file_get_contents("../current_status"),0,1);
+$people_count = json_decode(file_get_contents('https://flows.yt.gl/e0f75639-6d30-429a-9553-2bc0c130cc66/lab_state'));
 ?>
 <html>
 	<head>
@@ -29,6 +30,14 @@ $status = substr(file_get_contents("../current_status"),0,1);
 		<?php } ?>
 		</article>
 		</section>
+
+		<section>
+		<article>
+		<h2>People checked-in</h2>
+		<h1><?php echo $people_count->persons_present; ?> / <?php echo $people_count->persons_allowed; ?></h1>
+		</article>
+		</section>
+
 		<section>
 		<article>
 		<h2>Temperature</h2>
