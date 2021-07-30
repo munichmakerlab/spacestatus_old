@@ -1,6 +1,7 @@
 <?php
 $status = substr(file_get_contents("../current_status"),0,1);
 $people_count = json_decode(file_get_contents('https://flows.yt.gl/e0f75639-6d30-429a-9553-2bc0c130cc66/lab_state'));
+$devices = json_decode(file_get_contents("../devices.json"));
 ?>
 <html>
 	<head>
@@ -35,6 +36,19 @@ $people_count = json_decode(file_get_contents('https://flows.yt.gl/e0f75639-6d30
 		<article>
 		<h2>People checked-in</h2>
 		<h1><?php echo $people_count->persons_present; ?> / <?php echo $people_count->persons_allowed; ?></h1>
+		</article>
+		</section>
+
+		<section>
+		<article>
+		<h2>Devices</h2>
+		<table>
+		<?php
+		foreach ($devices as $device => $dev_state) {
+			 echo "<tr><th>" . $device . "</th><td>" . $dev_state . "</td></tr>";
+		}
+		?>
+		</table>
 		</article>
 		</section>
 
