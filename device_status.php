@@ -7,7 +7,7 @@ function getDeviceStatus($device) {
 		$result = array();
 		foreach ($matches[2] as $entry) {
 			foreach ((explode(PHP_EOL, $entry)) as $line) {
-				if(!str_contains($line, "=")) {
+				if(!strpos($line, "=")) {
 					continue;
 				}
 				$line = trim($line);
